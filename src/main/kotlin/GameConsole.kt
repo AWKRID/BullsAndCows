@@ -36,12 +36,12 @@ class GameConsole(private val level: Int = 3) {
         makeAnswer()
 
         while (true) {
-            count++
             userTry = input("숫자를 입력하세요\n")
             if (!isValidInput(userTry)) {
                 println("올바르지 않은 입력값입니다.")
                 continue
             }
+            count++
             if (checkAnswer(userTry)) break
         }
         gameRecord.add(count)
