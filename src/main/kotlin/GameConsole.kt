@@ -1,8 +1,9 @@
 package org.example
 
-class GameConsole(private val level: Int = 3) {
+class GameConsole() {
+    private var level: Int = 3
     private var answer: String = ""
-    private var gameRecord: MutableList<Int> = mutableListOf()
+    private var gameRecord: MutableList<Pair<Int,Int>> = mutableListOf()
     fun run() {
         while (true) {
             printMenu()
@@ -10,7 +11,8 @@ class GameConsole(private val level: Int = 3) {
             when (userChoice) {
                 "1" -> startGame()
                 "2" -> showRecord()
-                "3" -> {
+                "3" -> changeLevel()
+                "4" -> {
                     println("<숫자 야구 게임을 종료합니다>")
                     return
                 }
@@ -24,10 +26,24 @@ class GameConsole(private val level: Int = 3) {
     private fun printMenu() {
         printDashedLine()
         println("환영합니다! 원하시는 번호를 입력해주세요.")
-        println("1. 게임 시작하기\n2. 게임 기록 보기\n3. 종료하기")
+        println("현재 난이도: Lv.${level-2}")
+        println("1. 게임 시작하기\n2. 게임 기록 보기\n3. 난이도 변경하기\n4. 종료하기")
         printDashedLine()
     }
 
+    private fun changeLevel() {
+        println("<난이도 변경하기>")
+        for (i in 1..4) println("${i}. ${i + 2}자리 숫자")
+        println("메인메뉴로 돌아가려면 이외의 키를 입력해주세요.")
+        printDashedLine()
+        when (val levelInput = readln()) {
+            in "1", "2", "3", "4" -> {
+                level = levelInput.toInt() + 2
+                println("현재 난이도가 [${level}자리 숫자]로 변경됩니다. ")
+            }
+            else -> return
+        }
+    }
 
     private fun startGame() {
         var userTry: String
@@ -44,7 +60,7 @@ class GameConsole(private val level: Int = 3) {
             count++
             if (checkAnswer(userTry)) break
         }
-        gameRecord.add(count)
+        gameRecord.add(Pair(level,count))
 
     }
 
@@ -52,7 +68,7 @@ class GameConsole(private val level: Int = 3) {
         println("<게임 기록 보기>")
         printDashedLine()
         if (gameRecord.isEmpty()) println("아직 게임 기록이 없습니다.")
-        gameRecord.forEachIndexed { index, it -> println("${index + 1}번째 게임 : 시도 횟수 - $it") }
+        gameRecord.forEachIndexed { index, it -> println("${index + 1}번째 게임(Lv.${it.first-2}) : 시도 횟수 - ${it.second}") }
     }
 
     private fun makeAnswer() {
