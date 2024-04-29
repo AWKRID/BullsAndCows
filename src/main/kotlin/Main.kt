@@ -1,16 +1,43 @@
 package org.example
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+const val secretNumber = "456"
 fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
+
+    var userTry: String
+    println("<게임을 시작합니다>")
+
+    while (true) {
+        userTry = input("숫자를 입력하세요\n")
+        if (checkAnswer(userTry)) break
     }
+
+}
+
+fun checkAnswer(userTry: String): Boolean {
+    if (userTry == secretNumber) {
+        println("정답입니다!")
+        return true
+    }
+
+    var ballCount = 0
+    var strikeCount = 0
+    for (userIdx in userTry.indices) {
+        for (answerIdx in secretNumber.indices) {
+            if (userTry[userIdx] == secretNumber[answerIdx]) {
+                if (userIdx == answerIdx) strikeCount++
+                else ballCount++
+            }
+        }
+    }
+    if (ballCount == 0 && strikeCount == 0) println("Out!")
+    else if (ballCount == 0) println("${strikeCount}S")
+    else if (strikeCount == 0) println("${ballCount}B")
+    else println("${strikeCount}S${ballCount}B")
+    return false
+}
+
+fun input(message: String): String {
+    print(message)
+    return readln()
 }
