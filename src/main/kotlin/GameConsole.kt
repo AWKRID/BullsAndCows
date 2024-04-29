@@ -41,6 +41,7 @@ class GameConsole(private val level: Int = 3) {
         if (userInput.length != level) return false
         if (userInput.toCharArray().distinct().size != level) return false
         if (userInput.contains("0")) return false
+        for (char in userInput) if (!char.isDigit()) return false
         return true
     }
 
