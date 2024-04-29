@@ -1,12 +1,13 @@
 package org.example
 
-const val secretNumber = "456"
+var answer = "456"
 fun main() {
 
 
     var userTry: String
     println("<게임을 시작합니다>")
-
+    makeAnswer(3)
+    println(answer)
     while (true) {
         userTry = input("숫자를 입력하세요\n")
         if (checkAnswer(userTry)) break
@@ -15,7 +16,7 @@ fun main() {
 }
 
 fun checkAnswer(userTry: String): Boolean {
-    if (userTry == secretNumber) {
+    if (userTry == answer) {
         println("정답입니다!")
         return true
     }
@@ -23,8 +24,8 @@ fun checkAnswer(userTry: String): Boolean {
     var ballCount = 0
     var strikeCount = 0
     for (userIdx in userTry.indices) {
-        for (answerIdx in secretNumber.indices) {
-            if (userTry[userIdx] == secretNumber[answerIdx]) {
+        for (answerIdx in answer.indices) {
+            if (userTry[userIdx] == answer[answerIdx]) {
                 if (userIdx == answerIdx) strikeCount++
                 else ballCount++
             }
@@ -40,4 +41,19 @@ fun checkAnswer(userTry: String): Boolean {
 fun input(message: String): String {
     print(message)
     return readln()
+}
+
+fun makeAnswer(size: Int) {
+    val numberArray = IntArray(9) { it+1 }
+    repeat(size){
+        val firstNumber = numberArray.indices.random()
+        val secondNumber = numberArray.indices.random()
+        val temp = numberArray[firstNumber]
+        numberArray[firstNumber] = numberArray[secondNumber]
+        numberArray[secondNumber] = temp
+    }
+    answer = ""
+    for(i in 0..<size){
+        answer += numberArray[i].toString()
+    }
 }
