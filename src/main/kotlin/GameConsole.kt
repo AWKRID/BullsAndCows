@@ -49,7 +49,6 @@ class GameConsole(private val level: Int = 3) {
     }
 
     private fun showRecord() {
-
         println("<게임 기록 보기>")
         printDashedLine()
         if (gameRecord.isEmpty()) println("아직 게임 기록이 없습니다.")
@@ -64,22 +63,10 @@ class GameConsole(private val level: Int = 3) {
         }
     }
 
-    private fun makeRandomIntArray(): IntArray {
-        val numberArray = IntArray(9) { it + 1 }
-        repeat(level) {
-            val firstNumber = numberArray.indices.random()
-            val secondNumber = numberArray.indices.random()
-            val temp = numberArray[firstNumber]
-            numberArray[firstNumber] = numberArray[secondNumber]
-            numberArray[secondNumber] = temp
-        }
-        return numberArray
-    }
-
     private fun isValidInput(userInput: String): Boolean {
         if (userInput.length != level) return false
         if (userInput.toCharArray().distinct().size != level) return false
-        if (userInput.contains("0")) return false
+        if (userInput[0] == '0') return false
         for (char in userInput) if (!char.isDigit()) return false
         return true
     }
@@ -89,7 +76,13 @@ class GameConsole(private val level: Int = 3) {
             println("정답입니다!")
             return true
         }
+        val counts: Pair<Int, Int> = checkCounts(userTry)
+        showCounts(counts.first, counts.second)
+        printDashedLine()
+        return false
+    }
 
+    private fun checkCounts(userTry: String): Pair<Int, Int> {
         var ballCount = 0
         var strikeCount = 0
         for (userIdx in userTry.indices) {
@@ -100,11 +93,13 @@ class GameConsole(private val level: Int = 3) {
                 }
             }
         }
+        return Pair(ballCount, strikeCount)
+    }
+
+    private fun showCounts(ballCount: Int, strikeCount: Int) {
         if (ballCount == 0 && strikeCount == 0) println("Out!")
         else if (ballCount == 0) println("${strikeCount}S")
         else if (strikeCount == 0) println("${ballCount}B")
         else println("${strikeCount}S${ballCount}B")
-        printDashedLine()
-        return false
     }
 }

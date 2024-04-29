@@ -5,11 +5,4 @@ fun main() {
     gameConsole.run()
 }
 
-fun input(message: String): String {
-    print(message)
-    return readln()
-}
 
-fun printDashedLine() {
-    println("--------------------------------------")
-}
